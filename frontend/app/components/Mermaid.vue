@@ -118,7 +118,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="mermaid-container relative border rounded-lg p-4 bg-white overflow-hidden">
+  <div class="mermaid-container relative border border-line rounded-xl p-4 bg-white overflow-hidden">
     <!-- Inline -->
     <div ref="inlineSvgHost" v-html="svgSource" class="svg-host" />
 

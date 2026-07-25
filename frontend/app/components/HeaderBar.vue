@@ -3,27 +3,32 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 
 const items = ref<NavigationMenuItem[][]>([
   [
-    { label: 'Home', to: '/', class: 'hover:text-accent' },
-    { label: 'Projects', to: '/projects', class: 'hover:text-accent' },
-    { label: 'Impact', to: '/impact', class: 'hover:text-accent' },
-    { label: 'Resume', to: '/resume', class: 'hover:text-accent' },
-    { label: 'Contact', to: '/contact', class: 'hover:text-accent' },
-    { label: 'About', to: '/about', class: 'hover:text-accent' },
+    { label: 'Home', to: '/' },
+    { label: 'Projects', to: '/projects' },
+    { label: 'Impact', to: '/impact' },
+    { label: 'Resume', to: '/resume' },
+    { label: 'Contact', to: '/contact' },
+    { label: 'About', to: '/about' },
   ],
 ])
 </script>
 
 <template>
-  <UHeader class="shadow-sm">
+  <UHeader class="sticky top-0 z-50 border-b border-line bg-surface/80 backdrop-blur-md">
     <template #left>
-      <NuxtLink to="/" class="text-xl font-semibold text-primary"> Travis<span class="text-secondary"> Nickels</span> </NuxtLink>
+      <NuxtLink to="/" class="group flex items-baseline gap-2 text-lg font-semibold tracking-tight">
+        <span class="text-ink">Travis Nickels</span>
+        <span class="hidden font-mono text-[11px] uppercase tracking-[0.16em] text-muted transition-colors group-hover:text-accent sm:inline">
+          Technology leader
+        </span>
+      </NuxtLink>
     </template>
     <template #right>
-      <UNavigationMenu :items="items" variant="link" class="hover:text-accent hidden md:flex" color="info" />
+      <UNavigationMenu :items="items" variant="link" color="primary" highlight class="hidden md:flex" />
       <UColorModeButton />
     </template>
     <template #body>
-      <UNavigationMenu :items="items" variant="link" orientation="vertical" class="space-y-2" color="info" />
+      <UNavigationMenu :items="items" variant="link" color="primary" orientation="vertical" class="space-y-2" />
     </template>
   </UHeader>
 </template>
