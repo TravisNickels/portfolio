@@ -1,6 +1,6 @@
 # Travis Nickels – Portfolio
 
-Experienced software engineer and project manager with a focus on full-stack development, distributed systems, and internal automation. This portfolio showcases select projects demonstrating technical expertise, problem-solving, and collaboration across multiple domains.
+Technology leader with twenty years across regulated healthcare IT, distributed systems engineering, and end-to-end product ownership. Portfolio site built with Nuxt 4 and deployed to GitHub Pages.
 
 ## Internal Automation Tools
 
