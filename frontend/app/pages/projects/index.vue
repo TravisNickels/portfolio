@@ -1,13 +1,24 @@
 <script setup lang="ts">
-import clientManager from '~/content/projects/clientmanagerdemo.json'
+import onDeviceVision from '~/content/projects/ondevicecomputervision.json'
+import creadorasDeExito from '~/content/projects/creadorasdeexito.json'
 import projectTracker from '~/content/projects/multifacilityprojecttracker.json'
+import clientManager from '~/content/projects/clientmanagerdemo.json'
 
-const projects = [clientManager, projectTracker]
+const projects = [
+  { ...onDeviceVision, variant: 'featured' as const },
+  creadorasDeExito,
+  projectTracker,
+  { ...clientManager, variant: 'muted' as const },
+]
 </script>
 
 <template>
-  <div class="container mx-auto py-3 space-y-8">
-    <SectionHeader title="Projects" subtitle="Selected projects showcasing system design and practical engineering" />
+  <div class="space-y-12">
+    <SectionHeader
+      eyebrow="Selected work"
+      title="Projects"
+      subtitle="Shipped products first, then a reference implementation of the patterns underneath them."
+    />
 
     <ProjectGrid :items="projects" />
   </div>

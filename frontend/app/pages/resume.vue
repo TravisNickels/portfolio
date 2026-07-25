@@ -1,32 +1,29 @@
 <script setup lang="ts">
 const baseUrl = useRuntimeConfig().app.baseURL
+const pdfPath = baseUrl + 'resume/TravisNickels_TechnologyLeader_2026.pdf'
 </script>
 
 <template>
-  <div class="container mx-auto py-3 space-y-8">
+  <div class="space-y-12">
     <SectionHeader title="Resume" subtitle="Download a printable PDF or view it inline." />
 
-    <div class="grid gap-6 lg:grid-cols-3">
+    <div class="grid gap-8 lg:grid-cols-3 lg:gap-10">
       <div class="lg:col-span-2">
-        <iframe :src="baseUrl + 'resume/TravisNickels_SoftwareEngineer_2026.pdf'" class="w-full h-[80vh] border rounded-lg" />
+        <iframe :src="pdfPath" title="Resume" class="h-[80vh] w-full rounded-xl border border-line bg-card" />
       </div>
 
-      <aside class="space-y-4">
-        <div class="bg-card border border-primary rounded-lg p-6 shadow">
-          <h4 class="font-semibold">Quick summary</h4>
-          <p class="text-text mt-2">
-            Senior software engineer with a track record of building automation and distributed systems that scale and reduce operational friction.
+      <aside class="space-y-6 lg:sticky lg:top-28 lg:self-start">
+        <div class="surface-card p-6">
+          <p class="eyebrow mb-3 text-accent">Quick summary</p>
+          <p class="leading-relaxed">
+            Technology leader with twenty years across regulated healthcare IT, distributed systems engineering, and end-to-end product ownership. I
+            make architecture decisions with cost and business consequences in view.
           </p>
         </div>
 
-        <div class="bg-card border border-primary rounded-lg p-6 shadow">
-          <h4 class="font-semibold">Download</h4>
-          <a
-            :href="baseUrl + 'resume/TravisNickels_SoftwareEngineer_2026.pdf'"
-            download
-            class="mt-3 inline-block px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/80 transition"
-            >Download PDF</a
-          >
+        <div class="surface-card p-6">
+          <p class="eyebrow mb-3 text-muted">Download</p>
+          <UButton :to="pdfPath" download external color="primary" size="md" icon="i-lucide-download" block>Download PDF</UButton>
         </div>
       </aside>
     </div>

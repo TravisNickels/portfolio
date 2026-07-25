@@ -18,57 +18,109 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="container mx-auto py-3 space-y-8">
-    <SectionHeader :title="project.title" :subtitle="project.tagline" />
+  <div class="space-y-12">
+    <div>
+      <NuxtLink to="/projects" class="inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-accent">
+        <span aria-hidden="true">&larr;</span>
+        All projects
+      </NuxtLink>
 
-    <div class="grid gap-8 lg:grid-cols-3">
-      <div class="lg:col-span-2 space-y-6">
-        <h3 class="text-lg font-semibold">Overview</h3>
-        <p class="text-text">
-          {{ project.overview }}
-        </p>
+      <div class="mt-6">
+        <SectionHeader :title="project.title" :subtitle="project.tagline" />
+      </div>
+    </div>
 
-        <h3 class="text-lg font-semibold">Architecture</h3>
-        <p class="text-text">
-          {{ project.architectureSummary }}
-        </p>
-        <img v-if="project.diagram" :src="project.diagram" class="rounded shadow" />
-        <Mermaid v-if="mermaidSource" :source="mermaidSource" :title="project.mermaidTitle" />
+    <div class="grid gap-12 lg:grid-cols-3 lg:gap-14">
+      <div class="space-y-11 lg:col-span-2">
+        <section>
+          <h2 class="flex items-center gap-3 text-xl font-semibold tracking-tight">
+            <span class="h-px w-6 bg-accent" aria-hidden="true" />
+            Overview
+          </h2>
+          <p class="mt-4 text-lg leading-relaxed">{{ project.overview }}</p>
+        </section>
 
-        <h3 class="text-lg font-semibold">Technical Approach</h3>
-        <ul class="list-disc ml-6 space-y-2">
-          <li v-for="(t, i) in project.technicalApproach" :key="i">
-            {{ t }}
-          </li>
-        </ul>
+        <section>
+          <h2 class="flex items-center gap-3 text-xl font-semibold tracking-tight">
+            <span class="h-px w-6 bg-accent" aria-hidden="true" />
+            Architecture
+          </h2>
+          <p class="mt-4 leading-relaxed">{{ project.architectureSummary }}</p>
+          <img v-if="project.diagram" :src="project.diagram" class="mt-6 rounded-xl border border-line" />
+          <div v-if="mermaidSource" class="mt-6">
+            <Mermaid :source="mermaidSource" :title="project.mermaidTitle" />
+          </div>
+        </section>
 
-        <h3 class="text-lg font-semibold">Outcome & Lessons</h3>
-        <p class="text-text">
-          {{ project.outcome }}
-        </p>
+        <section v-if="project.decisions?.length">
+          <h2 class="flex items-center gap-3 text-xl font-semibold tracking-tight">
+            <span class="h-px w-6 bg-accent" aria-hidden="true" />
+            Decisions That Mattered
+          </h2>
+          <ul class="mt-4 space-y-4">
+            <li v-for="(d, i) in project.decisions" :key="i" class="border-l-2 border-line pl-4 leading-relaxed">
+              <span class="font-semibold text-ink">{{ d.title }}.</span>
+              {{ d.text }}
+            </li>
+          </ul>
+        </section>
+
+        <section v-if="project.technicalApproach?.length">
+          <h2 class="flex items-center gap-3 text-xl font-semibold tracking-tight">
+            <span class="h-px w-6 bg-accent" aria-hidden="true" />
+            Technical Approach
+          </h2>
+          <ul class="mt-4 space-y-3">
+            <li v-for="(t, i) in project.technicalApproach" :key="i" class="flex gap-3 leading-relaxed">
+              <span class="mt-2.5 size-1 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+              {{ t }}
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="flex items-center gap-3 text-xl font-semibold tracking-tight">
+            <span class="h-px w-6 bg-accent" aria-hidden="true" />
+            Outcome &amp; Lessons
+          </h2>
+          <p class="mt-4 leading-relaxed">{{ project.outcome }}</p>
+        </section>
       </div>
 
-      <aside class="space-y-4">
-        <div class="bg-card border border-primary rounded-lg p-4 shadow">
-          <p class="text-sm text-text">Stack</p>
-          <p class="font-medium mt-2">
-            {{ project.stack.join(' • ') }}
-          </p>
+      <aside class="space-y-6 lg:sticky lg:top-28 lg:self-start">
+        <div class="surface-card p-6">
+          <p class="eyebrow mb-3.5 text-muted">Stack</p>
+          <ul class="flex flex-wrap gap-1.5">
+            <li v-for="s in project.stack" :key="s">
+              <TechTag>{{ s }}</TechTag>
+            </li>
+          </ul>
         </div>
 
-        <div class="bg-card border border-primary rounded-lg p-4 shadow">
-          <p class="text-sm text-text">Artifacts</p>
-          <ul class="text-sm mt-2 space-y-2">
+        <div v-if="project.artifacts?.length" class="surface-card p-6">
+          <p class="eyebrow mb-3.5 text-muted">Artifacts</p>
+          <ul class="space-y-2.5 text-sm">
             <li v-for="(a, i) in project.artifacts" :key="i">
               <UModal :ui="{ content: 'w-[85vw] h-[85vh] max-w-none' }" :title="a.label" description="Asset images">
-                <ULink v-if="a.isImage" as="button" class="cursor-pointer text-accent underline hover:text-primary">{{ a.label }}</ULink>
+                <ULink
+                  v-if="a.isImage"
+                  as="button"
+                  class="cursor-pointer text-accent underline decoration-line underline-offset-4 hover:decoration-accent"
+                >
+                  {{ a.label }}
+                </ULink>
                 <template #body>
                   <img :src="baseUrl + a.link" />
                 </template>
               </UModal>
-              <ULink v-if="!a.isImage" :href="a.link" target="_blank" class="cursor-pointer text-accent underline hover:text-primary">{{
-                a.label
-              }}</ULink>
+              <ULink
+                v-if="!a.isImage"
+                :href="a.link"
+                target="_blank"
+                class="cursor-pointer text-accent underline decoration-line underline-offset-4 hover:decoration-accent"
+              >
+                {{ a.label }}
+              </ULink>
             </li>
           </ul>
         </div>
