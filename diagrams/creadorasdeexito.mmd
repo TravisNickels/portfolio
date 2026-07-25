@@ -1,0 +1,37 @@
+flowchart LR
+    subgraph SharedRepo[Contracts Repo]
+        CT[Shared TypeScript Contracts<br/>ts-rest + Zod]
+    end
+
+    subgraph WebRepo[Frontend Repo]
+        FE[Nuxt 4 SPA<br/>Cloudflare Pages]
+    end
+
+    subgraph ApiRepo[API Repo]
+        API[Hono API<br/>Cloudflare Workers]
+    end
+
+    DB[Supabase Postgres<br/>Row Level Security]
+    GCAL[Google Calendar<br/>External Integration]
+
+    %% Compile-time type dependencies (dashed blue)
+    CT -.->|Compile-time types| FE
+    CT -.->|Compile-time types| API
+
+    %% Runtime request path (solid green)
+    FE -->|HTTPS typed client| API
+    API -->|SQL| DB
+    API -->|Calendar sync| GCAL
+
+    %% Styling
+    classDef contract stroke:#2196F3,stroke-width:2px,stroke-dasharray: 5 5;
+    classDef runtime stroke:#4CAF50,stroke-width:2px;
+    class CT contract
+    class FE,API,DB,GCAL runtime
+    linkStyle 0,1 stroke:#3B82F6,stroke-width:2px,stroke-dasharray: 5 5;
+    linkStyle 2,3,4 stroke:#22C55E,stroke-width:2px;
+
+    %% Legend
+    classDef legendBox fill:none,stroke:none,color:#444,font-size:12px,text-align:left;
+    L1(["🟩 Solid Green → Runtime path      🟦 Dashed Blue → Compile-time types"])
+    L1:::legendBox
