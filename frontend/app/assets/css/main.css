@@ -1,33 +1,150 @@
 @import 'tailwindcss';
 @import '@nuxt/ui';
 
-@layer base {
-  body {
-    @apply antialiased text-default bg-surface scheme-light dark:scheme-dark;
-  }
-}
-
+/* =========================================================================
+   PALETTE:START  (stone + amber)
+   One neutral ramp carries structure, one accent carries emphasis.
+   Swapping this block is the only thing needed to change the palette.
+   ========================================================================= */
 @theme static {
-  --font-sans: Inter, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 
-  --color-primary: #0a3d62;
-  --color-secondary: #3c6382;
-  --color-accent: #38ada9;
-  --color-info: #38ada9;
-
-  /* --ui-bg: #f7f9fb; */
-  --color-surface: #f7f9fb;
+  /* neutrals: structure */
+  --color-ink: #1c1917;
+  --color-text: #44403c;
+  /* stone-500 would be #79716b, but that lands at 4.39:1 on --color-elevated.
+     Darkened one step so small mono labels clear WCAG AA on every surface. */
+  --color-muted: #736a63;
+  --color-line: #e7e5e4;
+  --color-surface: #faf9f7;
   --color-card: #ffffff;
-  --color-text: #364153;
+  --color-elevated: #f5f5f4;
+
+  /* brand: emphasis, used sparingly */
+  --color-primary: #b45309;
+  --color-accent: #b45309;
+  --color-secondary: #57534e;
+
+  /* Halos only. The accent is a dark burnt orange, and a dark hue at low
+     opacity over a near-white ground reads as grey haze rather than light,
+     so glows use a brighter amber than the accent does. */
+  --color-glow: #f59e0b;
 }
 
 .dark {
-  --color-primary: #4ea3ff;
-  --color-secondary: #6fa8dc;
-  --color-accent: #38ada9;
+  --color-ink: #fafaf9;
+  --color-text: #d1cdc8;
+  --color-muted: #a8a29e;
+  --color-line: #2b2523;
+  --color-surface: #0c0a09;
+  --color-card: #1a1614;
+  --color-elevated: #241f1c;
 
-  --color-surface: #0f172a;
-  --color-card: #162036; /*111827*/
-  --color-text: #e5e7eb;
+  --color-primary: #fbbf24;
+  --color-accent: #fcd34d;
+  --color-secondary: #a8a29e;
+  --color-glow: #fcd34d;
+}
+/* =========================================================================
+   PALETTE:END
+   ========================================================================= */
+
+/* Bridge our tokens into Nuxt UI's semantic variables so UHeader, UFooter,
+   UButton and UModal inherit the same system instead of their defaults.
+   Declared unlayered so they win over Nuxt UI's @layer theme defaults. */
+:root,
+.light,
+.dark {
+  --ui-bg: var(--color-surface);
+  --ui-bg-muted: var(--color-elevated);
+  --ui-bg-elevated: var(--color-elevated);
+  --ui-bg-accented: var(--color-line);
+  --ui-border: var(--color-line);
+  --ui-border-muted: var(--color-line);
+  --ui-border-accented: var(--color-line);
+  --ui-text: var(--color-text);
+  --ui-text-dimmed: var(--color-muted);
+  --ui-text-muted: var(--color-muted);
+  --ui-text-toned: var(--color-text);
+  --ui-text-highlighted: var(--color-ink);
+  --ui-radius: 0.5rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Decorative bleed (the hero halo) must never produce a horizontal
+       scrollbar. `clip` rather than `hidden`: it does not create a scroll
+       container, so the sticky header keeps working. */
+    overflow-x: clip;
+  }
+
+  body {
+    @apply antialiased bg-surface text-text;
+    color-scheme: light;
+  }
+
+  .dark body {
+    color-scheme: dark;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply text-ink;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-accent) 25%, transparent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Colour is applied at the call site so accent stays deliberate. */
+@utility eyebrow {
+  @apply font-mono text-[11px] uppercase tracking-[0.18em];
+}
+
+@utility surface-card {
+  @apply bg-card border border-line rounded-xl;
+}
+
+/* Raised surface that reacts to pointer. Kept as one utility so every card
+   in the site lifts identically. */
+@utility surface-interactive {
+  @apply bg-card border border-line rounded-xl transition duration-200;
+  box-shadow: 0 1px 2px color-mix(in oklab, var(--color-ink) 5%, transparent);
+}
+
+@utility surface-interactive-hover {
+  border-color: color-mix(in oklab, var(--color-accent) 45%, var(--color-line));
+  box-shadow:
+    0 12px 28px -12px color-mix(in oklab, var(--color-ink) 22%, transparent),
+    0 2px 6px -2px color-mix(in oklab, var(--color-ink) 10%, transparent);
+  transform: translateY(-2px);
 }
