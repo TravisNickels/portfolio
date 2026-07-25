@@ -9,7 +9,7 @@ export default defineNuxtConfig({
   app: {
     baseURL:
       process.env.NODE_ENV === 'production'
-        ? '/Portfolio/' // GitHub Pages repo name
+        ? '/portfolio/' // GitHub Pages repo name, case sensitive
         : '/',
   },
 

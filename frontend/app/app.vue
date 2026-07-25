@@ -12,22 +12,37 @@ useHead({
   },
 })
 
-const title = 'Travis Nickels - Senior Software Engineer'
+const title = 'Travis Nickels - Technology Leader'
 const description =
-  'Senior software engineer specializing in .NET, Vue, distributed systems, and workflow automation. Experience building internal platforms, developer tooling, and scalable systems.'
+  'Technology leader. Twenty years spanning hospital IT delivery, distributed systems engineering, and on-device ML products built end to end for early-stage companies.'
+
+const site = 'https://travisnickels.github.io/portfolio'
+
+// Social platforms cache preview images by URL, so a new image needs a new
+// filename. The previous ogImage.png stays in place so links already shared
+// against it keep resolving.
+const ogImage = `${site}/og-technology-leader-2026.png`
+const ogImageAlt = 'Travis Nickels, technology leader. I turn ambiguous problems into products that ship.'
 
 useSeoMeta({
   title,
   description,
   ogType: 'profile',
+  ogUrl: `${site}/`,
+  ogSiteName: 'Travis Nickels',
   ogTitle: title,
   ogDescription: description,
-  ogImage: 'https://travisnickels.github.io/Portfolio/ogImage.png',
+  ogImage,
+  ogImageType: 'image/png',
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
+  ogImageAlt,
 
   twitterCard: 'summary_large_image',
   twitterTitle: title,
   twitterDescription: description,
-  twitterImage: 'https://travisnickels.github.io/Portfolio/ogImage.png',
+  twitterImage: ogImage,
+  twitterImageAlt: ogImageAlt,
 })
 </script>
 
@@ -38,7 +53,7 @@ useSeoMeta({
 
       <!-- Expands to anchor footer to bottom of page -->
       <main class="flex-1 flex">
-        <UContainer class="py-12">
+        <UContainer class="w-full py-14 sm:py-20">
           <NuxtPage />
         </UContainer>
       </main>
