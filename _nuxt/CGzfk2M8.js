@@ -1,0 +1,1 @@
+import{_ as t}from"./DlAUqK2U.js";import{c as n,o,r}from"./BaoOixZd.js";const s={},c={class:"inline-flex items-center rounded-md border border-line bg-elevated px-2.5 py-1 font-mono text-[11px] leading-4 text-muted"};function _(e,a){return o(),n("span",c,[r(e.$slots,"default")])}const m=Object.assign(t(s,[["render",_]]),{__name:"TechTag"});export{m as _};
