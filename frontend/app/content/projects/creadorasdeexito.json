@@ -7,8 +7,8 @@
   "architectureSummary": "A full-stack application across three repositories using a contracts-first pattern, where shared TypeScript contracts enforce type safety from the API through to the frontend at compile time. The frontend is a Nuxt 4 single page application on Cloudflare Pages, with the API running on Cloudflare Workers and Supabase handling Postgres and authentication with row-level security. The serverless architecture holds infrastructure cost near flat as the user base grows, which matters for a product sold to individual team leaders rather than enterprises.",
   "decisions": [
     {
-      "title": "Calendar sync that refuses to guess",
-      "text": "Schedule data is the product's core asset, so the sync reconciles against Google Calendar in place and preserves record identity across updates. When a recurrence conflict is genuinely ambiguous, it surfaces the conflict to the user rather than silently choosing. Corrupting a director's calendar once would end the customer relationship."
+      "title": "Calendar sync that reconciles rather than replaces",
+      "text": "Schedule data is the product's core asset, so the sync resolves recurring series back to their root by base ID and preserves record identity across updates instead of deleting and re-creating. Corrupting a director's calendar once would end the customer relationship."
     },
     {
       "title": "Serverless over managed servers",
@@ -19,13 +19,12 @@
       "text": "A production outage traced to a server-side bundle exceeding the edge platform's size limit produced no application-level logs. After resolving it, I added bundle size checks to CI so the failure class cannot recur silently."
     },
     {
-      "title": "One data spine for the customer lifecycle",
-      "text": "Leads, contacts, and consultants are lifecycle stages on a single person model rather than separate entities, which removed a category of data drift and simplified every downstream feature."
+      "title": "Domain values live in the contracts, not the schema",
+      "text": "Enum-like columns on the CRM tables carry no database CHECK constraints. Allowed values are defined once in the shared Zod contracts, so extending a picklist is a TypeScript change rather than a migration. Field types that map directly to code paths keep their constraints, since those need a code change anyway."
     }
   ],
   "technicalApproach": [
-    "Owned production infrastructure directly: deployments, database schema management, DNS across two custom domains, secret rotation, and staging parity",
-    "Error monitoring pipeline that opens tickets automatically"
+    "Owned production infrastructure directly: deployments, database schema management, DNS across two custom domains, secret rotation, and staging parity"
   ],
   "outcome": "Built and shipped alone, from architecture through production deployment and ongoing operations. The serverless architecture keeps infrastructure cost near flat as the user base grows.",
   "stack": [
