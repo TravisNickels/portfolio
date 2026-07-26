@@ -1,5 +1,14 @@
 <script setup lang="ts">
-defineProps<{ items: any[] }>()
+interface ProjectSummary {
+  slug?: string
+  title: string
+  tagline?: string
+  description: string
+  stack: string[]
+  variant?: 'featured' | 'default' | 'muted'
+}
+
+defineProps<{ items: ProjectSummary[] }>()
 </script>
 
 <template>

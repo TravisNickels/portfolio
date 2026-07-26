@@ -119,8 +119,10 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="mermaid-container relative border border-line rounded-xl p-4 bg-white overflow-hidden">
-    <!-- Inline -->
-    <div ref="inlineSvgHost" v-html="svgSource" class="svg-host" />
+    <!-- Inline. The markup is SVG produced by mermaid.render from a .mmd file
+         committed to this repo, never from user input. -->
+    <!-- eslint-disable-next-line vue/no-v-html -->
+    <div ref="inlineSvgHost" class="svg-host" v-html="svgSource" />
 
     <!-- Controls -->
     <div class="absolute top-3 right-3 z-10 flex flex-col gap-2">
@@ -133,7 +135,8 @@ onBeforeUnmount(() => {
         <UButton icon="i-heroicons-arrows-pointing-out" size="xs" variant="solid" />
         <template #body>
           <div class="modal-container relative border rounded-lg bg-white overflow-hidden">
-            <div ref="modalSvgHost" v-html="svgSource" class="h-full w-full"></div>
+            <!-- eslint-disable-next-line vue/no-v-html -->
+            <div ref="modalSvgHost" class="h-full w-full" v-html="svgSource" />
             <div class="absolute top-3 right-3 flex flex-col gap-2">
               <UButton icon="i-heroicons-plus" size="xs" @click="zoomIn()" />
               <UButton icon="i-heroicons-minus" size="xs" @click="zoomOut()" />

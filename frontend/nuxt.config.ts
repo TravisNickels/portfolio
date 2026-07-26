@@ -23,10 +23,10 @@ export default defineNuxtConfig({
 
   eslint: {
     config: {
-      stylistic: {
-        commaDangle: 'never',
-        braceStyle: '1tbs',
-      },
+      // Prettier owns formatting. These stylistic rules contradicted
+      // .prettierrc.json (commaDangle 'never' against trailingComma 'es5'),
+      // so no file could satisfy both and lint could never pass.
+      stylistic: false,
     },
   },
 })
