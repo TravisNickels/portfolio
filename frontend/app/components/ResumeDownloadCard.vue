@@ -7,7 +7,7 @@ const pdfPath = baseUrl + 'resume/TravisNickels_TechnologyLeader_2026.pdf'
   <div class="surface-card flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
     <div>
       <p class="eyebrow mb-2 text-accent">Resume</p>
-      <p class="text-lg font-semibold tracking-tight text-ink">Twenty years, in full</p>
+      <p class="text-lg font-semibold tracking-tight text-ink">Roles, dates, and detail</p>
       <p class="mt-1 text-sm text-muted">Download a printable PDF or read it inline.</p>
     </div>
 
