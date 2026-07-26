@@ -1,60 +1,45 @@
-# Nuxt Starter Template
+# Portfolio site
 
-[![Nuxt UI](https://img.shields.io/badge/Made%20with-Nuxt%20UI-00DC82?logo=nuxt&labelColor=020420)](https://ui.nuxt.com)
+Nuxt 4 application behind [travisnickels.github.io/portfolio](https://travisnickels.github.io/portfolio/).
+Statically generated and published to GitHub Pages.
 
-Use this template to get started with [Nuxt UI](https://ui.nuxt.com) quickly.
+## Requirements
 
-- [Live demo](https://starter-template.nuxt.dev/)
-- [Documentation](https://ui.nuxt.com/docs/getting-started/installation/nuxt)
+Node 20 and npm. There is one lockfile, `package-lock.json`, and the deploy
+workflow installs with `npm ci`.
 
-<a href="https://starter-template.nuxt.dev/" target="_blank">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://ui.nuxt.com/assets/templates/nuxt/starter-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://ui.nuxt.com/assets/templates/nuxt/starter-light.png">
-    <img alt="Nuxt Starter Template" src="https://ui.nuxt.com/assets/templates/nuxt/starter-light.png">
-  </picture>
-</a>
-
-> The starter template for Vue is on https://github.com/nuxt-ui-templates/starter-vue.
-
-## Quick Start
-
-```bash [Terminal]
-npm create nuxt@latest -- -t github:nuxt-ui-templates/starter
-```
-
-## Deploy your own
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-name=starter&repository-url=https%3A%2F%2Fgithub.com%2Fnuxt-ui-templates%2Fstarter&demo-image=https%3A%2F%2Fui.nuxt.com%2Fassets%2Ftemplates%2Fnuxt%2Fstarter-dark.png&demo-url=https%3A%2F%2Fstarter-template.nuxt.dev%2F&demo-title=Nuxt%20Starter%20Template&demo-description=A%20minimal%20template%20to%20get%20started%20with%20Nuxt%20UI.)
-
-## Setup
-
-Make sure to install the dependencies:
+## Commands
 
 ```bash
-pnpm install
+npm install        # install dependencies
+npm run dev        # dev server on http://localhost:3000
+npm run generate   # static build into .output/public
+npm run preview    # serve the production build locally
+npm run lint       # eslint
+npm run typecheck  # vue-tsc
 ```
 
-## Development Server
+## Deployment
 
-Start the development server on `http://localhost:3000`:
+Pushing to `main` triggers `.github/workflows/deploy.yml` at the repository
+root, which runs `npm ci` and `npm run generate`, then publishes
+`frontend/.output/public`.
 
-```bash
-pnpm dev
-```
+The site is served from a subpath, so `app.baseURL` in `nuxt.config.ts` is
+`/portfolio/` in production. GitHub Pages paths are case sensitive: if that
+value stops matching the repository name exactly, every asset on the deployed
+site 404s, not just internal links.
 
-## Production
+## Structure
 
-Build the application for production:
+| Path | Purpose |
+| --- | --- |
+| `app/pages/` | Routes |
+| `app/components/` | Shared components |
+| `app/content/projects/` | Project case studies as JSON, one file per slug |
+| `app/assets/css/main.css` | Design tokens and the Nuxt UI bridge |
+| `public/` | Copied verbatim into the build output |
 
-```bash
-pnpm build
-```
-
-Locally preview production build:
-
-```bash
-pnpm preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Project pages are data driven. `app/pages/projects/[slug].vue` imports
+`app/content/projects/<slug>.json`, so the filename must match the slug.
+Anything placed in `public/` is published, including files nothing links to.
