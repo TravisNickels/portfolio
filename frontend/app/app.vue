@@ -4,9 +4,17 @@ useHead({
   meta: [
     { name: 'viewport', content: 'width=device-width, initial-scale=1' },
     { name: 'author', content: 'Travis Nickels' },
-    { name: 'robots', content: 'index, follows' },
+    { name: 'robots', content: 'index, follow' },
+    { name: 'theme-color', content: '#faf9f7', media: '(prefers-color-scheme: light)' },
+    { name: 'theme-color', content: '#0c0a09', media: '(prefers-color-scheme: dark)' },
   ],
-  link: [{ rel: 'icon', type: 'image/x-icon', href: `${base}faviconTN.ico` }],
+  link: [
+    // .ico first for legacy contexts, SVG for anything modern, which is the
+    // one that stays crisp on HiDPI tabs and in the bookmarks bar.
+    { rel: 'icon', type: 'image/x-icon', href: `${base}favicon.ico`, sizes: '32x32' },
+    { rel: 'icon', type: 'image/svg+xml', href: `${base}favicon.svg` },
+    { rel: 'apple-touch-icon', href: `${base}apple-touch-icon.png` },
+  ],
   htmlAttrs: {
     lang: 'en',
   },
@@ -18,9 +26,8 @@ const description =
 
 const site = 'https://travisnickels.github.io/portfolio'
 
-// Social platforms cache preview images by URL, so a new image needs a new
-// filename. The previous ogImage.png stays in place so links already shared
-// against it keep resolving.
+// Social platforms cache preview images by URL, so replacing the card means
+// a new filename rather than overwriting the old one.
 const ogImage = `${site}/og-technology-leader-2026.png`
 const ogImageAlt = 'Travis Nickels, technology leader. I turn ambiguous problems into products that ship.'
 
